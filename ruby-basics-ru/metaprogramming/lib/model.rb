@@ -1,55 +1,60 @@
 # frozen_string_literal: true
 
 # BEGIN
-class String
-  alias_method :string, :to_s
-  alias_method :integer, :to_i
-
-  def datetime
-    DateTime.parse(self)
-  end
-
-  def boolean
-    self == 'true' ? true : false
-  end
-end
-
-class Integer
-  alias_method :integer, :to_i
-end
-
-class TrueClass
-  def boolean
-    true
-  end
-end
-
 module Model
   def self.included(base)
     base.extend(ClassMethods)
   end
 
-  def attributes
-    self.instance_variables.each_with_object({}) do |var, obj|
-      obj[var.to_s[1..].to_sym] = instance_variable_get var
+  def initialize(attrs = {})
+    @attributes = {}
+    self.class.options.each do |name, options|
+      value = attrs[name] || options[:default]
+      set value, to: name
     end
   end
 
-  def initialize(options={})
-    options.each do |k, v|
-      self.send("#{k.to_s}=", v)
-    end
+  def set(value, to:)
+    options = self.class.options[to]
+    @attributes[to] = self.class.convert value, to: options[:type]
+  end
+
+  def attributes
+    @attributes
   end
 
   module ClassMethods
+    def options
+      @options || {}
+    end
+
+    def convert(input, to:)
+      return input if input.nil?
+
+      case to
+      when :integer
+        input.to_i
+      when :string
+        input.to_s
+      when :boolean
+        input == true
+      when :datetime
+        DateTime.parse(input)
+      else
+        raise 'Unknown type!'
+      end
+    end
+
     def attribute(name, **options)
+      @options ||= {}
+      @options[name] = options
+
       define_method name do
-        instance_variable_get "@#{name}"
+        @attributes[name]
       end
 
       define_method "#{name}=" do |value|
-        value = value.send(options[:type]) unless options[:type].nil?
-        instance_variable_set "@#{name}", value
+        set value, to: name
       end
     end
   end
