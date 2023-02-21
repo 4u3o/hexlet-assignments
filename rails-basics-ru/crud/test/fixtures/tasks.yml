@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+first:
+  name: MyString
+  description: MyText
+  status: MyString
+  creator: MyString
+  performer: MyString
+  completed: false
+
+<% 20.times do |i| %>
+task_<%= i %>:
+  name: <%= Faker::Lorem.sentence %>
+  description: <%= [Faker::Lorem.paragraph, nil].sample %>
+  status: <%= %w[Started Finished Stashed].sample %>
+  creator: <%= Faker::Name.name %>
+  performer: <%= [Faker::Name.name, nil].sample %>
+  completed: <%= Faker::Boolean.boolean %>
+<% end %>
