@@ -1,0 +1,8 @@
+h1 = @task.name
+p = @task.description
+p
+  i #{@task.status} by
+  | #{@task.creator} at #{@task.created_at.strftime('%d.%m.%Y %H:%M')}
+p = "completed" if @task.completed
+= link_to "Edit", edit_task_path
+= link_to "Delete", tasks_path, method: :delete
