@@ -1,0 +1,14 @@
+- content_for :title do
+  = @post.title
+p
+  strong.me-2 Body:
+  = @post.body
+/ BEGIN
+= render partial: 'posts/comments/post_comment', collection: @post.post_comments
+= render 'posts/comments/form', post_comment: @comment, url: post_comments_path(@post)
+/ END
+hr
+
+.d-flex
+  = link_to 'Edit', edit_post_path(@post), class: 'btn btn-outline-primary me-2'
+  = link_to 'Back', :back, class: 'btn btn-outline-primary'
