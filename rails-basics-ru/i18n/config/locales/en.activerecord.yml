@@ -1,0 +1,25 @@
+en:
+  activerecord:
+    models:
+      # BEGIN
+      post: Post
+      # END
+      post/comment: Comment
+    attributes:
+      # BEGIN
+      post:
+        title: Title
+        body: Body
+      # END
+      post/comment:
+        body: Body
+    errors:
+      models:
+        post:
+          attributes:
+            # BEGIN
+            body:
+              too_long: "should be shorter than %{count} signs"
+            # END
+      messages:
+        blank: "should be filled"

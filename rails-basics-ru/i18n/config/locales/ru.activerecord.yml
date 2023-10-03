@@ -1,0 +1,30 @@
+ru:
+  activerecord:
+    models:
+      # BEGIN
+      post: Пост
+      # END
+      post/comment: Комментарий
+
+    attributes:
+      post:
+        # BEGIN
+        title: Название
+        body: Содержание
+        # END
+      post/comment:
+        body: Содержание
+
+    errors:
+      models:
+        post:
+          attributes:
+            # BEGIN
+            body:
+              too_long: "должно быть не больше чем %{count} знаков"
+            # END
+      messages:
+        blank: "Должно быть заполнено"
+
+  layouts:
+
